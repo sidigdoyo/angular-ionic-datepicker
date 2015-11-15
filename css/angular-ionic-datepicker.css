@@ -1,0 +1,79 @@
+
+.datepicker .popup-head {
+    display: none;
+}
+
+.datepicker .popup-body {
+    padding: 0;
+}
+
+.datepicker .calendar-box {
+    padding: 10px;
+}
+
+.datepicker .calendar-day {
+    width: 14.285714286%;
+    display: -webkit-inline-box;
+    text-align: -webkit-center;
+    line-height: 36px;
+    border-radius: 4px;
+    margin: 4px 0;
+}
+
+.datepicker .calendar-day.today {
+    background-color: #ddd;
+}
+
+.datepicker .calendar-day.selected {
+    box-shadow: 0 0 0 2px orange inset;
+}
+
+.datepicker .calendar-day.next-month {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.datepicker .calendar-day.prev-month {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.datepicker .calendar-day.min-value {
+    color: #ccc;
+}
+
+.datepicker .calendar-weeks {
+    width: 14.285714286%;
+    display: -webkit-inline-box;
+    text-align: -webkit-center;
+    font-size: 13px;
+}
+
+.datepicker .calendar-title {
+    width: 100%;
+    height: 40px;
+}
+
+.datepicker .calendar-title .button {
+    text-align: -webkit-center;
+    position: absolute;
+    width: 40px;
+    padding: 0;
+}
+
+.datepicker .calendar-title .button.prev {
+    left: 0;
+}
+
+.datepicker .calendar-title .button.next {
+    right: 0;
+}
+
+.datepicker .calendar-title .title {
+    text-align: -webkit-center;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    line-height: 40px;
+}

@@ -1,0 +1,81 @@
+
+.datepicker {
+	.popup-head {
+		display: none;
+	}
+	.popup-body {
+		padding: 0;
+	}
+
+	.calendar-box {
+		padding: 10px;
+	}
+
+	.calendar-day {
+		width: 14.285714286%;
+		display: -webkit-inline-box;
+		text-align: -webkit-center;
+		/* height: 40px; */
+		line-height: 36px;
+		border-radius: 4px;
+		margin: 4px 0;
+
+		&.today {
+			background-color: #ddd;
+		}
+
+		&.selected {
+			box-shadow: 0 0 0 2px orange inset;
+		}
+
+		&.next-month {
+			font-size: 12px;
+			color: #ccc;
+		}
+
+		&.prev-month {
+			font-size: 12px;
+			color: #ccc;
+		}
+
+		&.min-value {
+			color: #ccc;
+		}
+	}
+
+	.calendar-weeks {
+		width: 14.285714286%;   
+		display: -webkit-inline-box;   
+		text-align: -webkit-center;
+		font-size: 13px;
+	}
+
+	.calendar-title {
+		width: 100%;
+		height: 40px;
+
+		.button {
+			text-align: -webkit-center;
+			position: absolute;
+			width: 40px;
+			padding: 0;
+
+			&.prev {
+				left: 0;
+			}
+
+			&.next {
+				right: 0;
+			}
+		}
+
+		.title {
+			text-align: -webkit-center;
+			position:absolute;
+			right: 0;
+			left: 0;
+			top: 0;
+			line-height: 40px;
+		}
+	}
+}
