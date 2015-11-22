@@ -24,7 +24,7 @@
 	ionDatepickerProvider.$inject = [];
 
 	//******** datepicker factory *********************************************************************************************************************************
-	var ionDatepickerService = function($ionDatepicker) {
+	var ionDatepickerService = function($ionDatepicker, $window) {
 		var month = [];
 		var daysInMonth = [];
 		var temp = new Date();
@@ -105,11 +105,34 @@
 					max: _max
 				};
 			},
+			getMonths: function() {
+				var count = 0;
+				var months = [];
+				while (count < 12) {
+					months.push($window.moment().month(count++).format("MMMM"));
+				}
+
+				return months;
+			},
+			getYears: function(index) {
+				var now = new Date();
+				var thisYear = now.getFullYear();
+
+				if(index) {
+					thisYear = index;
+				}
+
+				var years = [];
+				for(var i=thisYear - 6; i< thisYear + 6; i++) {
+					years.push(i);
+				}
+				return years;
+			},
 			nextMonth: nextMonth,
 			prevMonth: prevMonth
 		};
 	};
-	ionDatepickerService.$inject = ["$ionDatepicker"];
+	ionDatepickerService.$inject = ["$ionDatepicker", "$window"];
 
 	//******** datepicker directive *********************************************************************************************************************************
 	ionDatepickerCtrl = function($scope, $ionicPopup, $filter, service) {
@@ -138,11 +161,10 @@
 			vm.currentMonth = service.getCurrent();
 		};
 
-
 		vm.showPopup = function() {
 			vm.popup = $ionicPopup.show({
 				template: "<div class='calendar-title'>" +
-					"<div class='title'>{{ctrl.currentDate | date : \'MMMM yyyy\'}}</div>" + 
+					"<div class='title'><span ng-click='ctrl.showPopupMonth()'>{{ctrl.currentDate | date : \'MMMM\'}}</span> <span ng-click='ctrl.showPopupYear()'>{{ctrl.currentDate | date : \'yyyy\'}}</span></div>" + 
 						"<a ng-click='ctrl.prevMonth()' class='button button-clear button-icon prev'>" + 
 							"<i class='ion-chevron-left'></i>" + 
 						"</a>" +
@@ -156,6 +178,66 @@
 					"</div>",
 				cssClass: "datepicker",
 				scope: $scope.$new()
+			});
+		};
+
+		vm.setMonth = function(month) {
+			vm.currentDate.setMonth(month);
+			vm.daysInMonth = service.getDaysInMonth(vm.currentDate.getMonth(), vm.currentDate.getFullYear());
+			vm.currentMonth = service.getCurrent();
+
+			vm.popupMonth.close();
+		};
+
+		
+		vm.showPopupMonth = function() {
+			vm.months = service.getMonths();
+
+			vm.popupMonth = $ionicPopup.show({
+				template: "<div class='calendar-month-box'>" +
+						"<div class='calendar-month' ng-repeat='month in ctrl.months track by $index' ng-click='ctrl.setMonth($index)'>{{month}}</div>" +
+					"</div>",
+				cssClass: "datepicker-month",
+				scope: $scope.$new(),
+				buttons: [
+					{ text: 'Cancel' },
+				]
+			});
+		};
+
+		vm.setYear = function(year) {
+			vm.currentDate.setFullYear(year);
+			vm.daysInMonth = service.getDaysInMonth(vm.currentDate.getMonth(), vm.currentDate.getFullYear());
+			vm.currentMonth = service.getCurrent();
+
+			vm.popupYear.close();
+		};
+
+		vm.setYears = function(year) {
+			vm.years = service.getYears(year);
+		};
+
+		vm.showPopupYear = function() {
+			vm.years = service.getYears();
+
+			vm.popupYear = $ionicPopup.show({
+				template: "<div class='calendar-title'>" +
+						"<div class='title'>{{ctrl.currentDate.getFullYear()}}</div>" + 
+						"<a ng-click='ctrl.setYears(ctrl.years[0] - 6)' class='button button-clear button-icon prev'>" + 
+							"<i class='ion-chevron-left'></i>" + 
+						"</a>" +
+						"<a ng-click='ctrl.setYears(ctrl.years[11] + 7)' class='button button-clear button-icon next'>" +
+							"<i class='ion-chevron-right'></i>" +
+						"</a>" +
+					"</div>" +
+					"<div class='calendar-year-box'>" +
+						"<div class='calendar-year' ng-repeat='year in ctrl.years track by $index' ng-class='{\"current-year\": year === ctrl.currentDate.getFullYear()}' ng-click='ctrl.setYear(year)'>{{year}}</div>" +
+					"</div>",
+				cssClass: "datepicker-year",
+				scope: $scope.$new(),
+				buttons: [
+					{ text: 'Cancel' },
+				]
 			});
 		};
 
