@@ -145,9 +145,9 @@
 		}
 		vm.today = service.today();
 		vm.weeks = service.getDays();
-		vm.currentDate = service.today();
+		vm.currentDate = vm.model || service.today();
 
-		vm.daysInMonth = service.getDaysInMonth(vm.today.getMonth(), vm.today.getFullYear());
+		vm.daysInMonth = service.getDaysInMonth(vm.currentDate.getMonth(), vm.currentDate.getFullYear());
 		vm.currentMonth = service.getCurrent();
 
 		vm.nextMonth = function() {
