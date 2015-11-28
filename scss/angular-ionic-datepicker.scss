@@ -1,5 +1,9 @@
 
 .datepicker {
+	.popup {
+		min-width: 300px;
+	}
+
 	.popup-head {
 		display: none;
 	}
@@ -9,6 +13,18 @@
 
 	.calendar-box {
 		padding: 10px;
+	}
+	
+	.month-select {
+		position: relative;
+		width: 60%;
+		display: -webkit-inline-box;
+	}
+
+	.year-select {
+		position: relative;
+		width: 40%;
+		display: -webkit-inline-box;
 	}
 
 	.calendar-day {
@@ -91,13 +107,13 @@
 }
 
 .calendar-month {
-    display: -webkit-inline-box;
-    width: 33.333333334%;
-    padding: 10px 5px;
-    text-align: -webkit-center;
-    /* margin: 0 10px; */
-    font-size: 13px;
-    /* border: 1px solid #ccc; */
+	display: -webkit-inline-box;
+	width: 33.333333334%;
+	padding: 10px 5px;
+	text-align: -webkit-center;
+	/* margin: 0 10px; */
+	font-size: 13px;
+	/* border: 1px solid #ccc; */
 }
 
 .datepicker-year {
@@ -138,18 +154,18 @@
 	}
 
 	.calendar-year-box {
-	    padding: 0 10px;
+		padding: 0 10px;
 	}
 
 	.calendar-year {
-	    display: -webkit-inline-box;
-	    min-width: 25%;
-	    padding: 15px 0;
-	    text-align: -webkit-center;
+		display: -webkit-inline-box;
+		min-width: 25%;
+		padding: 15px 0;
+		text-align: -webkit-center;
 
-	    &.current-year {
-		    background-color: #ccc;
-		    border-radius: 4px;
+		&.current-year {
+			background-color: #ccc;
+			border-radius: 4px;
 		}
 	}
 }

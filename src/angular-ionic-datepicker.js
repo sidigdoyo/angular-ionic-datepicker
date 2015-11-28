@@ -165,16 +165,41 @@
 			vm.currentMonth = service.getCurrent();
 		};
 
+		vm.prevYear = function() {
+			vm.currentDate.setFullYear(vm.currentDate.getFullYear() - 1);
+			vm.daysInMonth = service.getDaysInMonth(vm.currentDate.getMonth(), vm.currentDate.getFullYear());
+			vm.currentMonth = service.getCurrent();
+		};
+		vm.nextYear = function() {
+			vm.currentDate.setFullYear(vm.currentDate.getFullYear() + 1);
+			vm.daysInMonth = service.getDaysInMonth(vm.currentDate.getMonth(), vm.currentDate.getFullYear());
+			vm.currentMonth = service.getCurrent();
+		};
+
 		vm.showPopup = function() {
 			vm.popup = $ionicPopup.show({
 				template: "<div class='calendar-title'>" +
-					"<div class='title'><span ng-click='ctrl.showPopupMonth()'>{{ctrl.currentDate | date : \'MMMM\'}}</span> <span ng-click='ctrl.showPopupYear()'>{{ctrl.currentDate | date : \'yyyy\'}}</span></div>" + 
-						"<a ng-click='ctrl.prevMonth()' class='button button-clear button-icon prev'>" + 
-							"<i class='ion-chevron-left'></i>" + 
-						"</a>" +
-						"<a ng-click='ctrl.nextMonth()' class='button button-clear button-icon next'>" +
-							"<i class='ion-chevron-right'></i>" +
-						"</a>" +
+					"<div class='title'>" +
+						"<div class='month-select' >" +
+							"<div ng-click='ctrl.showPopupMonth()'>{{ctrl.currentDate | date : \'MMMM\'}}</div>" +
+							"<a ng-click='ctrl.prevMonth()' class='button button-clear button-icon prev'>" + 
+								"<i class='ion-chevron-left'></i>" + 
+							"</a>" +
+							"<a ng-click='ctrl.nextMonth()' class='button button-clear button-icon next'>" +
+								"<i class='ion-chevron-right'></i>" +
+							"</a>" +
+						"</div>" +
+						"<div class='year-select'>" +
+							"<div ng-click='ctrl.showPopupYear()'>{{ctrl.currentDate | date : \'yyyy\'}}</div>" +
+							"<a ng-click='ctrl.prevYear()' class='button button-clear button-icon prev'>" + 
+								"<i class='ion-chevron-left'></i>" + 
+							"</a>" +
+							"<a ng-click='ctrl.nextYear()' class='button button-clear button-icon next'>" +
+								"<i class='ion-chevron-right'></i>" +
+							"</a>" +
+						"</div>" +
+					"</div>" + 
+						
 					"</div>" +
 					"<div class='calendar-box'>" +
 						"<div class='calendar-weeks' ng-repeat='day in ctrl.weeks'>{{day}}</div>" +
