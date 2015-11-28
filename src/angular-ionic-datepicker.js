@@ -145,7 +145,11 @@
 		}
 		vm.today = service.today();
 		vm.weeks = service.getDays();
-		vm.currentDate = vm.model || service.today();
+		vm.currentDate = service.today();
+
+		if(vm.model) {
+			vm.currentDate = angular.copy(vm.model);
+		}
 
 		vm.daysInMonth = service.getDaysInMonth(vm.currentDate.getMonth(), vm.currentDate.getFullYear());
 		vm.currentMonth = service.getCurrent();
