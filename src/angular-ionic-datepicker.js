@@ -139,8 +139,8 @@
 		var vm = this;
 		vm.hasMinValue = false;
 
-		if(vm.minValue) {
-			vm.minValue = new Date(vm.minValue.getFullYear(), vm.minValue.getMonth(), vm.minValue.getDate());
+		if(vm.minDateValue) {
+			vm.minDateValue = new Date(vm.minDateValue.getFullYear(), vm.minDateValue.getMonth(), vm.minDateValue.getDate());
 			vm.hasMinValue = true;
 		}
 		vm.today = service.today();
@@ -174,7 +174,7 @@
 					"</div>" +
 					"<div class='calendar-box'>" +
 						"<div class='calendar-weeks' ng-repeat='day in ctrl.weeks'>{{day}}</div>" +
-						"<div class='calendar-day' ng-repeat='day in ctrl.daysInMonth' ng-class='{\"today\": day.getTime() == ctrl.today.getTime(), \"selected\": day.getTime() == ctrl.model.getTime(), \"prev-month\": day.getTime() < ctrl.currentMonth.min.getTime(), \"next-month\": day.getTime() > ctrl.currentMonth.max.getTime(), \"min-value\": ctrl.hasMinValue && ctrl.minValue.getTime() > day.getTime()}' ng-click='ctrl.select(day)'>{{day.getDate()}}</div>" +
+						"<div class='calendar-day' ng-repeat='day in ctrl.daysInMonth' ng-class='{\"today\": day.getTime() == ctrl.today.getTime(), \"selected\": day.getTime() == ctrl.model.getTime(), \"prev-month\": day.getTime() < ctrl.currentMonth.min.getTime(), \"next-month\": day.getTime() > ctrl.currentMonth.max.getTime(), \"min-value\": ctrl.hasMinValue && ctrl.minDateValue.getTime() > day.getTime()}' ng-click='ctrl.select(day)'>{{day.getDate()}}</div>" +
 					"</div>",
 				cssClass: "datepicker",
 				scope: $scope.$new()
@@ -246,37 +246,30 @@
 		};
 
 		vm.select = function(date) {
-			if(!vm.hasMinValue || date.getTime() >= vm.minValue.getTime()) {
+			if(!vm.hasMinValue || date.getTime() >= vm.minDateValue.getTime()) {
 				vm.model = date;
 				vm.closePopup();
-			} else {
-
-				var alertPopup = $ionicPopup.alert({
-					title: 'Alert',
-					template: 'Selected date cannot be less than '+ $filter('date')(vm.minValue, 'dd MMMM yyyy')
-				});
-
-				alertPopup.then(function(res) {
-					
-				});
 			}
 		};
-
 	};
+
 	ionDatepickerCtrl.$inject = ["$scope", "$ionicPopup", "$filter", "ionDatepickerService"];
 	
 	ionDatepickerLink = function(scope, element, attr, ctrl) {
-
 		var showCalendar = function() {
 			ctrl.showPopup();
 		};
 		element.bind('click', showCalendar);
 
 		if(ctrl.hasMinValue) {
-			scope.$watch('ctrl.minValue', function(newValue, oldValue) {
+			scope.$watch('ctrl.minDateValue', function(newValue, oldValue) {
 
-				if(newValue.getTime() > ctrl.model) {
-					ctrl.showPopup();
+				if(newValue) {
+
+					if(newValue.getTime() > ctrl.model) {
+						delete ctrl.model;
+					}
+
 				}
 
 			});
@@ -289,7 +282,7 @@
 			restrict: "A",
 			bindToController: {
 				model: "=ngModel",
-				minValue: "="
+				minDateValue: "="
 			},
 			scope: {},
 			controllerAs: "ctrl",
@@ -298,7 +291,6 @@
 		};
 	};
 	ionDatepicker.$inject = [];
-
 
 
 	//******** dateformat directive *********************************************************************************************************************************
