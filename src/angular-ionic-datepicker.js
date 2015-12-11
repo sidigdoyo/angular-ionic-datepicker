@@ -29,6 +29,7 @@
 		var daysInMonth = [];
 		var temp = new Date();
 		var _min, _max;
+		var formatDate;
 
 		var getDaysInMonth = function(month, year) {
 			var date = new Date(year, month, 1);
@@ -70,7 +71,6 @@
 			} else {
 				month += 1;
 			}
-
 			current.setMonth(month);
 			current.setFullYear(year);
 			return current;
@@ -150,7 +150,6 @@
 		if(vm.model) {
 			vm.currentDate = angular.copy(vm.model);
 		}
-
 		vm.daysInMonth = service.getDaysInMonth(vm.currentDate.getMonth(), vm.currentDate.getFullYear());
 		vm.currentMonth = service.getCurrent();
 
@@ -330,15 +329,33 @@
 	        link: function(scope, elm, attrs, ctrl) {
 	            var moment = $window.moment;
 	            var dateFormat = attrs.ionDateFormat;
+	            var defaultDate = attrs.ionDateDefault;
+	            console.log("dateFormatdateFormat", dateFormat);
 
 	            attrs.$observe('ionDateFormat', function(newValue) {
-	                if (dateFormat == newValue || !ctrl.$modelValue) return;
+
+	                if (dateFormat == newValue) return;
 	                dateFormat = newValue;
-	                ctrl.$modelValue = new Date(ctrl.$setViewValue);
+	                if (!ctrl.$modelValue && (defaultDate && defaultDate != "") ){
+	                	ctrl.$modelValue = $window.moment(defaultDate).format(dateFormat);
+	                }else if (!ctrl.$modelValue && (!defaultDate || defaultDate == "") ){
+	                	return;
+	                }else{
+	                	ctrl.$modelValue = new Date(ctrl.$setViewValue);
+	                }
 	            });
 
 	            ctrl.$formatters.unshift(function(modelValue) {
-	                if (!dateFormat || !modelValue) return "";
+
+	                if (!dateFormat) return "";
+	                if (modelValue && (defaultDate && defaultDate != "") ){
+	                	modelValue = $window.moment(defaultDate).format(dateFormat);
+	                }else if (!modelValue && (!defaultDate || defaultDate == "") ){
+	                	return;
+	                }else{
+	                	modelValue = $window.moment(new Date()).format(dateFormat);
+	                }
+
 	                var retVal = moment(new Date(modelValue)).format(dateFormat);
 	                return retVal;
 	            });
